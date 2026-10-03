@@ -87,14 +87,7 @@ def save_model(w, b, mu, sd, y_mu, y_sd, cols, path="model.pkl"):
 
 
 def load_and_predict(person: dict, path="model.pkl") -> float:
-    """Load saved model and predict charges for one person.
-
-    Args:
-        person: dict with keys age, sex, bmi, children, smoker, region
-        path:   path to the saved .pkl file
-    Returns:
-        Predicted insurance charge in USD
-    """
+   
     m   = joblib.load(path)
     row = pd.DataFrame([person])
     row = encode(row).reindex(columns=m["cols"], fill_value=0).astype(float)
@@ -106,7 +99,7 @@ def load_and_predict(person: dict, path="model.pkl") -> float:
 
 
 def predict_new(person: dict, path="model.pkl") -> None:
-    """Pretty-print a prediction for one person."""
+   
     charge = load_and_predict(person, path)
     print(f"  {person['age']}yo {person['sex']}, BMI {person['bmi']}, "
           f"{person['children']} child(ren), smoker={person['smoker']}, "
@@ -210,15 +203,7 @@ def main():
     
     save_model(w, b, mu, sd, y_mu, y_sd, Xtr.columns)
 
-    
-    print("\n========== PREDICT NEW INPUTS ==========")
-    examples = [
-        {"age": 35, "sex": "male",   "bmi": 28.5, "children": 2, "smoker": "no",  "region": "southwest"},
-        {"age": 52, "sex": "female", "bmi": 34.1, "children": 0, "smoker": "yes", "region": "southeast"},
-        {"age": 22, "sex": "male",   "bmi": 21.0, "children": 0, "smoker": "no",  "region": "northwest"},
-    ]
-    for person in examples:
-        predict_new(person)
+
 
 
 if __name__ == "__main__":
